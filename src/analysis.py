@@ -8,5 +8,5 @@ def index():
     results = analysis.run_analysis()
     return render_template('index.html', results=results)
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
