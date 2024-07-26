@@ -5,6 +5,7 @@ pipeline {
         stage('Setup') {
             steps {
                 bat '''
+                apt install python3 -y
                     python --version
                     pip --version
                 '''
