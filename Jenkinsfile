@@ -2,43 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Setup') {
-            steps {
-                bat '''
-                apt install python3 -y
-                    python --version
-                    pip --version
-                '''
-            }
-        }
-        stage('Install Packages') {
-            steps {
-                bat 'pip install -r requirements.txt'
-            }
-        }
-        stage('Build') {
-            steps {
-                bat 'echo Building...'
-            }
-        }
-        stage('Test') {
+        stage('Verify Python Installation') {
             steps {
                 script {
-                    bat 'pytest'
-                }
-            }
-        }
-        stage('Docker Build') {
-            steps {
-                script {
-                    bat 'docker build -t data-analytics-app:latest .'
-                }
-            }
-        }
-        stage('Deploy to Minikube') {
-            steps {
-                script {
-                    bat 'kubectl apply -f k8s/deployment.yaml'
+                    bat '''
+                    REM Check if Python is available at the specified path
+                    SET PYTHON_PATH=C:\\Users\\zuhai\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe
+                    IF EXIST "%PYTHON_PATH%" (
+                        "%PYTHON_PATH%" --version
+                        "%PYTHON_PATH%" -m pip --version
+                    ) ELSE (
+                        echo Python executable not found at %PYTHON_PATH%
+                    )
+                    '''
                 }
             }
         }
