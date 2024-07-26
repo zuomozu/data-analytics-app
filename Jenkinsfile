@@ -2,19 +2,32 @@ pipeline {
     agent any
 
     stages {
-        stage('Verify Python Installation') {
+        stage('Build') {
             steps {
                 script {
-                    bat '''
-                    REM Check if Python is available at the specified path
-                    SET PYTHON_PATH=C:\\Users\\zuhai\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe
-                    IF EXIST "%PYTHON_PATH%" (
-                        "%PYTHON_PATH%" --version
-                        "%PYTHON_PATH%" -m pip --version
-                    ) ELSE (
-                        echo Python executable not found at %PYTHON_PATH%
-                    )
-                    '''
+                    docker.build('data-analytics-app')
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    docker.image('data-analytics-app').inside {
+                        sh 'pytest'
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    // Push the Docker image to a Docker registry (if needed)
+                    docker.withRegistry('https://my-registry.com', 'my-credentials-id') {
+                        docker.image('data-analytics-app').push('latest')
+                    }
+
+                    // Deploy to Minikube
+                    sh 'kubectl apply -f deployment.yaml'
                 }
             }
         }
