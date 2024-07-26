@@ -6,8 +6,8 @@ pipeline {
             steps {
                 script {
                     // Use bat for Windows batch command
-                    bat 'C:\Users\zuhai\AppData\Local\Microsoft\WindowsApps\python.exe -m pip install -r requirements.txt'
-                }
+                     bat 'C:/Users/zuhai/AppData/Local/Microsoft/WindowsApps/python.exe -m pip install -r requirements.txt'
+                 }
             }
         }
         stage('Test') {
