@@ -25,9 +25,6 @@ pipeline {
                     docker.withRegistry('https://my-registry.com', 'my-credentials-id') {
                         docker.image('data-analytics-app').push('latest')
                     }
-
-                    // Deploy to Minikube
-                    sh 'kubectl apply -f deployment.yaml'
                 }
             }
         }
