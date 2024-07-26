@@ -1,6 +1,29 @@
 pipeline {
     agent any
 
+
+    stages {
+        stage('Setup') {
+            steps {
+                bat '''
+                    python --version
+                    pip --version
+                '''
+            }
+        }
+        stage('Install Packages') {
+            steps {
+                bat 'pip install -r requirements.txt'
+            }
+        }
+        stage('Build') {
+            steps {
+                bat 'echo Building...'
+            }
+        }
+    }
+
+
     stages {
         stage('Build') {
             steps {
